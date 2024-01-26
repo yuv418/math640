@@ -27,7 +27,7 @@ ME1s:=proc(a,e,n) local i,s:
     s:
 end:
 
-#ME1(a,e,n): a^e mod n, the stupid way
+#ME1(a,e,n): a^e mod n, the not stupid way.
 ME1:=proc(a,e,n) local i,s,d:
     if e=1 then
         return (a mod n):
