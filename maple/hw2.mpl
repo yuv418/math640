@@ -2,7 +2,29 @@
 # Part 1:
 #
 
-# I feel quite confident with Maple now, so only a few examples are included.
+# I feel quite confident with Maple now, so only a few examples (of things I am
+# a little confused/want more practice with) are included.
+
+set_test := {1, 1, 1, 1}:
+if set_test = {1} then print("OK"): else print("FAIL"): fi:
+
+T := table([("blueberry")=812049006901, ("strawberry")=03338320004]);
+T;
+op(T);
+op(T["blueberry"]);
+
+
+F:=array(1..2,1..7, [[seq(it, it=1..7)], [seq(it, it=7..13)]]);
+
+pdf := exp(-x^2/2)/sqrt(2*Pi);
+plot(pdf);
+evalf(pdf(0));
+diff(pdf(x),x);
+evalf(maximize(pdf,x));
+int(pdf, x=-infinity..infinity);
+
+with(student):
+value(intparts(Int(x*exp(x), x), x));
 
 
 #
