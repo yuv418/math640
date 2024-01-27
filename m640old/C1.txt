@@ -1,0 +1,39 @@
+#C1.txt Jan 18. 2024 Getting started
+
+#CC(P,k): Inputs a message, given a list of characters, P (in lower case)
+#and an integer k from 0 to 26 outputs the encrypted message
+#Example
+#CC([d,o,r,o,n],2); should output [f,q,t,q,p]
+
+CC:=proc(P,k1) local A,T,i1:
+A:=[a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]:
+
+for i1 from 1 to nops(A) do
+T[A[i1]]:=A[((i1+k1-1) mod 26)+1]:
+od:
+
+[seq(T[P[i1]], i1=1..nops(P))]:
+
+end:
+
+
+#SC([d,o,r,o,n],[2,3,5,1...]); should output [f,q,t,q,p]
+
+SC:=proc(P,pi) local A,T,i1:
+
+A:=[a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]:
+for i1 from 1 to nops(A) do
+ T[A[i1]]:=A[pi[i1]]:
+od:
+
+[seq(T[P[i1]], i1=1..nops(P))]:
+
+end:
+
+#InvPi(pi)
+InvPi:=proc(pi) local i1,sig:
+for i1 from 1 to nops(pi) do 
+ sig[pi[i1]]:=i1:
+od:
+[seq(sig[i1],i1=1..nops(pi))]:
+end:

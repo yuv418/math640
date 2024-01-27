@@ -1,0 +1,122 @@
+-*- org -*-
+
+* 3.0.5
+** Fix bug in maplev-cmaple--process-environment.
+** Change maplev-pkg.el to require button-lock 1.0.2 (in elpa).
+** Replaced deprecated local-write-file-hooks with write-file-functions.   
+** Improve mint corrections.
+** cmaple: set LD_LIBRARY_PATH environment variable.
+** Add $elifdef and $elifndef to highlighted preprocessor macros.
+* 3.0.4
+** Fix maplev--protected-names-re
+* 3.0.3
+** Add maplev-compat.el.
+** Add maplev-edit-source.
+** Add double-quote to quote/declare options.
+** Handle new 'break if ...' and 'next if ...' syntax.
+** Update highlighted names (builtins, protected, etc.).
+** Update copyrights.
+* 3.0.2
+** Assign OS env. var. MAPLE when starting pmaple.
+** Change CLOUD-ID.
+
+* 3.0.1
+
+** Modify cmaple to cerate maplev-config as needed
+** Handle underscores in maplev-mark-defun
+
+* 3.0
+** Use compiled binary (pmaple) to communicate with maple
+** Add maplev-config; remove maplev-executable-alist
+** Improve interactive capabilities of mint-mode
+
+* 2.37
+** Minor changes.  Purge emacs byte-compile nags.  Will distribute build files.
+* 2.36
+** Handle 'until' keyword in indentation algorithm.
+** Add maplev-warn-mode.
+* 2.35
+** Compile regular expression.
+** Remove maplev-find-file.  Add :mapledir to config.
+** Improve info documentation
+** Highlight Compatibility and Thread Safety sections when viewing help page
+* 2.34
+** Add ob-maple.el: provide org-babel functions for Maple evaluation
+** Add maplev-config.el: configure maplev for a project
+** Add maplev-version.el: used to embed git-version.
+** Improve indentation speed for single line balanced expressions
+** Remove maplev-executable-alist.   
+
+* 2.33
+** Add maplev-tabs-indent-mode 
+** Add README.md, delete README, install, tweak Makefile
+* 2.32
+** eliminate customizing font-lock per release
+** eliminate maplev-default-release and related variables
+** add speedbar support for Maple source files
+** change maplev-proc to maple-view and extend to print modules
+** add maplev-trace-indent commands for indenting Maple trace output
+** update info pages
+** button-lock: eliminate warning about use of cl
+* 2.31
+** Fix compile issue with Emacs 24
+* 2.30
+** add parsing of #LINK prefix in maple source files
+** fix hyperlinking in "See Also" section
+** add Maple 2015 entry in tables
+** bind mouse-1 to mint-output buffer clicks (was mouse-2)
+** improve handling of mint-output buffer
+** make maplev-get-tab-width-function a nil variable that the user can assign a procedure
+* 2.29
+** Add maplev-add-maple-to-compilation function
+** Change the way global/local/exports are indented (options available)
+** Provide method to display help pages in standard help browser (requires Help module)
+
+* 2.28.1
+** Remove folding requirement
+** Cleanup Makefile
+* 2.28
+** Split maplev.el into multiple files
+** Remove ~ as a component of a simple name, allowed as initial character.
+** Update Makefile 
+** Fix version number of maplev info file
+* 2.27:
+** Font-lock 'static' (as special word)
+** Improve regular expression match for simple-names
+** Fix issue with mint and include statements
+* 2.26:
+** Add customizable flag maplev-include-file-other-window-flag
+** Add $elif and $file as preprocessor directors
+** Font-lock lastexception
+* 2.25:
+** bind C-c C-o to button to open include files
+* 2.24:
+** fix bug when creating include file.
+* 2.23:
+** fix bug finding include path.  If include file not found, but path exists, query to create.
+** refactor maplev-auto-fill.
+** Advise fixup-whitespace to catenate strings and remove space from leading comma,
+   these are used with delete-indentation.
+* 2.22:
+** Modify so that an error loading a config file (.maplev) does not prevent maplev from loading
+* 2.21:
+** Added maple 16
+** Buttonize include statements; clicking them opens the file.
+   The functionality respects include file delimiters (angle brackets
+   or double quotes) and acts accordingly, using maplev-include-path
+   to provide the include path of searchable directories.  A heuristic
+   is used if the normal searches fail; that allows most includes to just
+   work.
+** Search and load a maplev configuration file, which can be project specific.
+   The configuration file is elisp.  A typical use is to set maplev-include-path
+   (which is now buffer-local) so that the buttonizing (above) works properly
+   with the project.  
+* 2.20:
+** Handle leading tilde in symbols (new with Maple 16; used for coercion).
+** Improve README.
+* 2.19:
+** Eliminate compilation errors
+* 2.18:
+** Added 'subset' to reserved words (Maple 7!)
+** Added 'upperbound' and 'lowerbound' to builtin functions
+

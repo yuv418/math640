@@ -1,0 +1,231 @@
+#
+# Part 1: Garvan's book
+#
+
+# some commands from across these sections are included.
+
+# calculator
+
+tan(Pi/5);
+evalf(`%`);
+evalf(sin(Pi/6));
+Digits := 10;
+`%%`;
+evalf(sin(Pi/6));
+convert(%, rational);
+
+# fraction stuff
+
+a := (x - y - z)*(x + y + z);
+b := (x^2 - 2*x*y - 2*x*z + y^2 + 2*y*z + z^2)*(x^2 - x*y + x*z - y*z);
+c := a/b;
+normal(c);
+simplify(c);
+factor(c);
+numer(c);
+denom(c);
+factor(%);
+
+a := 'a';
+b := 'b';
+c := 'c';
+
+fr:=(x^3+y^3+z^3)/(x^2-y^2);
+denom(fr);
+factor(%);
+
+# dividing polynomials
+a := 2*x^3 + x^2 + 12;
+b := x^2 - 4;
+q := quo(a, b, x);
+r := rem(a, b, x);
+# should be zero
+expand(a - (b*q + r));
+
+# polynomial expansions
+p := (y + x)*(-y - x)*(2 -y + x);
+q := expand(%);
+coeff(q, x, 2);
+degree(q, x);
+coeff(p, x, 2);
+
+# substituting
+p := (x + y + z)*(x - y + z)*(x - y - z);
+subs(x = 1, p);
+subs(x = 1, y = 2, p);
+x := 1: y := 2: p;
+x := 'x': y := 'y':
+
+# solving
+eqn := x^2 - 2*x = 2;
+R := solve(eqn, x);
+expand(R[1] * R[2]);
+# check solns
+simplify(subs(x=R[1], lhs(eqn)));
+simplify(subs(x=R[2], lhs(eqn)));
+
+eqns := {x^2 + 2*x*y + y^2 = 0,x^2-4=0};
+solve(eqns, {x, y});
+# should be integer solns either way
+isolve(eqns);
+%[1];
+assign(%);
+a; x;
+
+#primes
+ifactor(115928169);
+
+a := 47;
+q := 7;
+b := iquo(a, q);
+r := irem(a, q);
+b*q + r;
+
+lcm(6,7,8);
+
+
+#
+# Part 3
+#
+
+#CC(P,k): Inputs a message, given a list of characters, P (in lower case)
+#and an integer k from 0 to 26 outputs the encrypted message
+#Example
+#CC([d,o,r,o,n],2); should output [f,q,t,q,p]
+
+CC:=proc(P,k1) local A,T,i1:
+    A:=[a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]:
+
+    for i1 from 1 to nops(A) do
+        T[A[i1]]:=A[((i1+k1-1) mod 26)+1]:
+    od:
+
+    # op(T):
+    [seq(T[P[i1]], i1=1..nops(P))]:
+end:
+
+
+#CCg(P,A,k): Input a message, and given an alphabet, and an integer offset
+#outputs the encrypted message.
+CCg:=proc(P,A,k1) local T,i1:
+
+    # ensure ever value in P is a member of A
+    for i1 from 1 to nops(P) do
+        if not member(P[i1],A) then
+            return FAIL
+        end if:
+    od:
+
+    for i1 from 1 to nops(A) do
+        T[A[i1]]:=A[((i1+k1-1) mod nops(A))+1]:
+    od:
+
+    # op(T):
+    [seq(T[P[i1]], i1=1..nops(P))]:
+end:
+
+# TESTS FOR CCg
+
+#try some shifts using CC
+doron_shift_cc := CC([d,o,r,o,n],1);
+hello_shift_cc := CC([h,e,l,l,o],7);
+marmalade_shift_cc := CC([m,a,r,m,a,l,a,d,e],28);
+
+# try some alphabet shifts using CCg
+alphabet := [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]:
+
+doron_shift_ccg := CCg([d,o,r,o,n], alphabet, 1);
+hello_shift_ccg := CCg([h,e,l,l,o], alphabet, 7);
+marmalade_shift_ccg := CCg([m,a,r,m,a,l,a,d,e], alphabet, 28);
+
+# verify their equality
+if (doron_shift_cc = doron_shift_ccg) and
+    (hello_shift_cc = hello_shift_ccg) and
+    (marmalade_shift_cc = marmalade_shift_ccg) then
+    print(`CCg alphabet shifts match CC!`)
+end if;
+
+# try some other alphabets
+alphabet := [seq(i, i=1..9)]:
+
+if (CCg([1,7,3], alphabet, 9) = [1,7,3]) and
+   (CCg([2,4,1,7,9,3], alphabet, 1) = [3,5,2,8,1,4]) and
+    (CCg([1,4,8,2,1], alphabet, 4) = [5,8,3,6,5]) then
+    print(`CCg digits shifts match expected output!`)
+end if;
+
+# we are using backticks for this example as the "T" will conflict with the
+# table T in the CCg implementation.
+alphabet := [`C`,`A`,`G`,`T`]:
+
+if (CCg([`G`,`A`,`C`], alphabet, 4) = [`G`,`A`,`C`]) and
+   (CCg([`A`], alphabet, -1) = [`C`]) and
+    (CCg([`T`,`C`,`G`], alphabet, 29) = [`C`,`A`,`T`]) then
+    print(`CCg digits shifts match expected output!`)
+end if;
+
+# some tests that should fail
+if (CCg([1, 2, 3], [0], 1) = FAIL) and
+    (CCg([2,4,1,27,10,3], [seq(i, i=1..9)], 1) = FAIL) and
+    (CCg([d,o,r,0,n], alphabet, 1) = FAIL) then
+    print(`CCg input with invalid alphabet fails successfully!`)
+end if;
+
+#
+# Part 4
+#
+
+# read the list T[i]
+read `ENGLISH.txt`:
+
+# reset the variables
+i:='i':
+j:='j':
+k:='k':
+
+alphabet := [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]:
+
+for i1 from 1 to nops(alphabet) do
+    alphabet_table[alphabet[i1]] := i1
+od:
+
+
+
+for i1 from 3 to 10 do
+    i_letter_words := ENG()[i1]:
+    occurrences := [seq(0, i1=1..26)]:
+    for j1 from 1 to i1 do
+        # get the list of i-letter words
+        # generate table of occurrences for each letter
+        for k1 from 1 to nops(i_letter_words) do
+            # print(`indexing` || i_letter_words[k][j]):
+            alphabet_value := alphabet_table[i_letter_words[k1][j1]];
+            # print(eval(i_letter_words[k1]));
+            # print(alphabet_value);
+            occurrences[alphabet_value] := occurrences[alphabet_value]+1;
+        od:
+
+        # print(occurrences):
+
+        T[i1,j1] := occurrences:
+    od:
+od:
+
+op(T);
+
+# Create F
+# F[3][1] = frequency of letter a in the 3rd position of a letter
+
+for i1 from 1 to 10 do
+    F[i1] := [seq(0, k1=1..26)]
+od:
+
+for i1 from 3 to 10 do
+    for j1 from 1 to i1 do
+      for k1 from 1 to 26 do
+          F[j1][k1] := F[j1][k1] + T[i1,j1][k1];
+      od:
+    od:
+od:
+
+op(F);

@@ -1,0 +1,526 @@
+2010-05-29  Joe Riel  <joer@san.rr.com>
+
+	* lisp/maplev.el (maplev-default-init-string): 
+	assign maplev_print
+	(maplev-mode-map): mapl C-c C-c l to maplev-cmaple-send-line
+	(maplev-help-fontify-node): highlight subsection titles
+	(maplev--indent-info): Improve doc string
+
+2009-12-11  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-help-fontify-node): 
+	Added font-locking of comments.
+	Modified code for selecting See Also hyperlinks
+	to work with Maple 14, which generates a line space
+	after the See Also.  May need tweaking
+
+2009-12-10  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--protected-names-re): 
+	Added 'restart' and 'with'.
+
+2009-11-01  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-help-follow-mouse): 
+	Check whether topic is in a package overview, if so,
+	prepend the package name.  Hmm, this won't always work,
+	suppose the link is to a help page in another package.
+	Oh well...
+
+2009-09-12  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--protected-names-re): 
+	Addede curry, rcurry, is, real
+
+2009-07-28  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el 
+	(maplev-comment-to-string-region): convert comments to embedded strings.
+	(maplev-string-to-comment-region): inverse of above.
+
+2009-06-26  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--possibly-typed-assignment-re): 
+	New regular expression suggested by Erik; now used in
+	maplev--indent-point-of-proc to permit matching 
+	static methods of objects:  method :: static := proc()...end proc.
+
+2009-04-19  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--protected-names-re): 
+	regex to match standard Maple protected names (circa release 13).
+	(maplev-font-lock-keywords-3): add protected names to font-lock
+	level 3.
+	(maplev-protected-face): Face for font-locking protected names.
+
+2009-02-05  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-help-fontify-node): 
+	Added fontification of help hyperlinks.
+	It's overly aggressive...o
+	(maplev--activate-hyperlink): 
+	New function to assist activating hyperlinks;
+	split out from maplev--activate-hyperlinks.
+
+2009-01-17  Joe Riel  <joer@san.rr.com>
+	* maplev.el abstract: Implemented Erik's patch, which provides a
+	function for adding variable declarations in a multiline format.
+	Extended it to provide two multi-line formats: trailing-comma and
+	leading-comma.  Also provided option to alphabetize the
+	declarations.
+	(maplev-add-local-variable)
+	(maplev-add-declaration-trailing-comma)
+	(maplev-add-declaration-leading-comma)
+	(maplev-add-declaration-one-line)
+	(maplev-alphabetize-declarations-p)
+	(maplev-add-declaration-function)
+
+2009-01-15  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-fill-paragraph): 
+	(fixed tab insertion)
+	(maplev--compute-indent): Fixed bug where local_xxx is
+	interpreted as a 'local'.  Forced use of proper syntax table.
+	(maplev-mode-map): bound new func maplev-what-proc
+	(maplev-what-proc): new command; displays the name of the
+	current procedure in the echo area.  Bound to C-h M-d.
+	"d" was chosen because originally I named this maplev-describe-proc.
+
+2008-06-07  Joe Riel  <joer@san.rr.com>
+
+	* Makefile
+	Fixed.  Added --no-site-file to emacs.
+	Without this, the elc doesn't work (is tiny).
+
+2008-06-05  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--builtin-functions-alist): 
+	12: added Record, rtable_size.  Backquoted some names.
+	
+
+2008-05-19  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-goto-info-node): 
+	Fixed.
+
+2008-02-22  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--help-section-re): 
+	Added "Options" to section headers.
+
+2008-02-21  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--grammar-alist): 
+	Modified assignment to maplev--grammar-alist
+	to avoid a minor byte-compile nag.
+
+2008-02-20  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--help-section-re): 
+	Added "Notes" and "Algorithm" to section headers.
+	These mainly appear in internal help pages.
+
+2007-11-01  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--preprocessor-directives-re): 
+	Added "elif" to preprocessor macro list
+	(maplev--preprocessor-directives-re): 
+	Removed "elif".  Maple documentation was wrong,
+	it does not exist.  Submitted SCR 54831.
+
+2007-10-23  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--deprecated-re): 
+	New regex.  Not yet used.
+
+2007-07-08  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--update-indent-info):
+	Added comparison of keyword to "*)" to handle multiline comments.
+	Not sure this is the best way.
+	(maplev--grammar-keyword-re): 
+	Added "(*" and "*)" so that they can (later) be distinguished
+	from "(" and ")".  Too bad syntax matching regexps don't skip
+	the (syntatic) comment markers.
+
+2007-05-25  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-mode-syntax-table): 
+	Changed syntax table so << .. >> act as multiline comments.
+	This is useful with noweb.  Should be limited to there...
+
+2007-05-24  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev-mode-syntax-table): 
+	Updated syntax table to handle Maple 12 nested multiline comments:
+	(* ... *).
+
+2007-04-07  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el [documenting previous changes]
+	(maplev-executable-alist): Added entries for maple 10 and 11.
+	(maplev-default-release): made 11.
+	(maplev-init-string-alist): added entry for 11
+	(maplev--reserved-words-alist): added entry for 11
+	(maplev--builtin-functions-alist): added entry for 11
+
+2007-03-01  Joe Riel  <joer@san.rr.com>
+
+	* maplev.el (maplev--special-words-re): 
+	Added _options, _noptions, etc to special words list.
+
+2006-06-23  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--assignment-re): 
+	Modified so that it procedures entered as table entries
+	are typeset as follows:
+	  , myproc = proc() 
+	    local x
+	        ...
+	    end proc
+	Also added optional forward quotes around name.
+	This was done in a crude manner, they may not match.
+	
+
+2006-06-02  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-mint-include-dir): 
+	New custom variable, used to assign a directory
+	to search for $include files.   Probably should
+	be a list of directories, but I'm not sure how to 
+	handle that.
+	(maplev-mint--goto-source-pos): 
+	Added optional argument FILE.
+	(maplev-mint--goto-source-proc): 
+	Modified to handle a source file in an $include statement.
+
+2005-09-17  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--help-process): 
+	Removed assigning interface(screenheight=24).
+	That was done to control tty plotting, however, because I implemented it badly
+	(it echos in the cmaple buffer) it is bothersome.  Better to just
+	call plotsetup(X11) or plotsetup(maplet).
+
+2005-06-15  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--validate-indent-info): 
+	Added check for noweb-minor-mode.  
+	(maplev-clear-indent-info):
+	Changed from maplev--clear-indent-info.
+	Made this interactive.
+	(maplev-mode-map): 
+	Assigned (maplev-clear-indent-info) to the key C-c-tab-k.
+
+2005-03-01  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--reserved-words-alist): 
+	Added "uses" to reserved word list for Maple 10.
+	(maplev--declaration-re): Addes "uses" to declaration regexp.
+
+2005-02-02  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-executable-alist): added "10" for maple10 to linux section.
+	Need to update Windows part.  Actually, this whole thing should be redone.
+	(maplev-init-string-alist): added "10".
+	(maplev--reserved-words-alist): added "10".
+	(maplev--builtin-functions-alist): added "10".
+
+2004-10-01  Joe Riel  <joer@k-online.com>
+
+	* maplev.el
+	(maplev--template-proc): was maplev-template-proc.
+	(maplev--help-section-re): Modified to handle subpackages.
+	Also added References section.
+	(maplev-help-fontify-node): Stopped hyperlink highlighting
+	following "SeeAlso" upon encountering a blank line.
+	(maplev--template-proc-module): was maplev-template.
+	(maplev-mode-map): added key for maple-template-use-statement
+	(maplev-help-mode-map): Fixed typo in (space) key.  This still may not work.
+	(maplev-mint-fontify-alist): Added Module to regex for maplev-mint-proc-face
+
+2004-09-29  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-align-rules-list):
+	Added rule for aligning type declaration, that is, (::).
+
+2004-09-21  Joe Riel  <joer@k-online.com>
+
+	* maplev.el
+	(maplev--compute-indent): Let case-fold-search to nil in top-most
+	let statement.
+	(maplev-mint-fontify-alist): Added Module to regex for
+	maplev-mint-proc-face.
+
+2004-07-20  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-history-delete-item): 
+	Added `when' so that code is executed only if the stack exists.
+
+2004-07-14  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-mode-syntax-table): Made `&' a word
+	constituent so that the neutral operator &to, for example, would
+	not be matched as a keyword (to).  
+
+2004-06-21  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--update-indent-info): 
+	Added calls to save-restriction and widen to prevent errors 
+	in parse-partial-sexp when the valid stack point is outside
+	a current restriction.
+
+2004-06-17  Joe Riel  <joer@k-online.com>
+
+	* maplev.el
+	(maplev--generate-initial-completion-alist): Pulled code out of
+	maplev-complete-symbol and put here.  Added extraction of symbols
+	from ?index/package.  Made selection of symbols more robust.
+	(maplev-complete-on-module-exports): New function for adding the
+	exports of a module to the completion alist.
+	(maplev-add-exports-of-module-at-point): This the interactive
+	function.
+	(maplev-cmaple-direct): New function for interfacing directly with
+	cmaple.  Its rather crude, essentially it permits sending a one
+	line input and returns the one line output.
+
+2004-06-11  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-mint--goto-source-line): New procedure for
+	moving point to the referenced line in the maple source.  Added a
+	list item to maplev-mint-fontify-alist and modified
+	maplev-mint-handler to use this functionality.
+
+	* maplev.el 
+	- Replaced functions used for selecting and demarking
+	defuns (procedures and modules).
+	
+	  Deleted                    Added
+	  -------                    -----
+	  maplev-beginning-of-proc   maplev-beginning-of-defun
+	  maplev-end-of-proc         maplev-end-of-defun
+	  maplev-scan-proc
+	  maplev-proc-beginning      maplev--beginning-of-defun-pos
+	  maplev-proc-end            maplev--end-of-defun-pos
+	  maplev-proc-bounds     
+	  maplev-mark-proc           maplev-mark-defun
+	  maplev-narrow-to-proc      maplev-narrow-to-defun
+	  maplev-current-proc        maplev-current-defun
+
+	The new functions are not just different in name; some of them are
+	complete rewrites.  While "defun" has no intrinsic Maple meaning,
+	I used it because it wasn't clear that "proc" would also include
+	modules.  The optional "level" parameter that was used with many
+	of the original functions has been removed; it complicated things
+	and seemed of relatively little use.
+
+	- Redid regular expressions, using the shy group operator.
+	Modified maplev--defun-begin-re so that the first group is the
+	complete name of the defun.  This fixed Imenu support so that it
+	works with indexed names.
+	
+2004-06-10  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--end-of-defun-pos): New procedure for finding
+	the end of a Maple defun.  It replaces maplev-end-of-proc.  
+
+2004-06-08  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--re-search-forward): Rewrote so that it works
+	correctly when |count| <> 1.  The previous version did not check
+	whether intermediate matches (those counted past) are in comments.
+	Did the same with maplev--re-search-backward.
+
+2004-06-03  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-delete-vars): Rewrote to handle variables with
+	type declarations.
+
+2004-06-02  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev-mint-fontify-alist): Used shy group operator
+	in regular expressions to eliminate the need for the SUBEXP
+	element in the alist.  Updated maplev-mint-fontify-buffer to
+	reflect the change.
+	
+2004-05-24  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--update-indent-info): Used unwind-protect to
+	swap syntax tables so that underscores are treated as word
+	constituents during indentation parsing.  This permits using
+	variables with names like fee_fi_fo_fum; previously the
+	indentation routine would break on the "fi".  During normal
+	editing, the underscore is treated as a symbol constituent, this
+	permits easily editting a portion of the symbol using word
+	commands.  This technique was copied from the ada-mode.el.
+
+	The current implementation probably doesn't work for R4 source.
+
+2004-05-19  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--help-definition-re): Assign regular
+	expression for dictionary references (hyperlinks) in help pages.
+	(maplev-help-fontify-node): Add code for activating dictionary
+	hyperlinks.
+
+2004-01-29  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (maplev--compute-indent): 
+	Set case-fold-search to nil when checking for 
+	maplev--declaration-re.
+
+2003-10-10  Joe Riel  <joer@k-online.com>
+
+	* maplev.el (complete-symbol-function): removed.
+
+2003-10-09  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el 
+	- Added (require info) so maplev-goto-info-node compiles (still
+	doesn't work).
+	- Fixed all mode-map assignments; used characters for letter
+	symbols (a -> ?a).
+	(event-window): Used defun rather than defsubst so that it would
+	byte-compile in Xemacs.  I don't understand why this is necessary.
+	(event-point):  Used defun rather than defsubst, see above.
+	(maplev-cmaple--lock-access): forward-quoted 'maplev-release in put.
+	(maplev-cmaple--unlock-access): forward-quoted 'maplev-release in put.
+	(maplev-cmaple--locked-p): forward-quoted 'maplev-release in get.
+	(maplev-cmaple-status): forward-quoted 'maplev-release in get.
+	(complete-symbol-function): added variable to permit the user to
+	bind maplev-complete-symbol to a particular key.
+	(maplev-mode): Make complete-symbol-function local to the MapleV
+	buffer and set it to maplev-complete-symbol.
+	(maplev-complete-symbol): Added optional prefix argument.  
+	This isn't currently used, but permits passing an optional prefix,
+	which could be used to choose a particular symbol list.
+
+2003-10-09  Roland Winkler  <Roland.Winkler@physik.uni-erlangen.de>
+
+	* maplev.el
+	(maplev-align-exclude-rules-list): Fix docstring.
+	(maplev-completion-release): New variable used for selecting the
+	correct maple release when calculating the lazy minibuffer
+	completion.
+	(maplev--list-to-word-re) Use eval-and-compile.
+	(maplev--grammar-keyword-re): Use eval-when-compile.
+	(maplev-cmaple--start-process) Use identity for mapconcat.
+	(maplev-cmaple-pop-to-buffer): Don't call
+	maplev--completion-initialize.
+	(maplev-ident-around-point-interactive): Use new function
+	maplev--completion.
+	(maplev--completion-initialize): Removed.
+	(maplev--completion): New function for lazily calculating the
+	minibuffer completion. The first time it is used for a certain
+	Maple release it calculates and stores the completion table in
+	maplev-completion-alist. Subsequent calls merely extract the
+	relevant portion of maplev-completion-alist.
+	(maplev-complete-symbol): Use maplev--completion.
+
+
+
+2003-10-08  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el 
+	- Changed all mode-map assignments to define keys using a notation
+	  that is compatible with both FSF Emacs and Xemacs.
+	- Modified all mouse key maps to use maplev--mouse-keymap (see below).
+	- Added Time-Stamp field.
+	(maplev--list-to-word-re): assigned inside eval-when-compile
+	(maplev--special-words-re): added eval-when-compile
+	(maplev--initial-variables-re): added eval-when-compile
+	(maplev--mouse-keymap): new function to handle defining mouse
+	button keymaps, specifically differences between Emacs and Xemacs.
+
+2003-10-07  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el 
+	(maplev--special-words-re): removed eval-when-compile
+	(maplev--initial-variables-re): removed eval-when-compile
+
+2003-10-05  Joe Riel  <joer@k-online.com>
+
+	* maplev.el 
+	(maplev-executable-alist): Added items for Maple 9.
+	(maplev-default-release): Made Maple 9 the default
+	(maplev-init-string-alist): Added Maple 9 item
+	(maplev--reserved-words-alist): Added Maple 9 reserved word list (same 8)
+	(maplev--builtin-functions-alist): Added Maple 9 builtin function list
+
+2003-02-17  Joe Riel  <joer@k-online.com>
+
+	* maplev.el 
+	(maplev--string-re): Fixed to match when the sring contains an escaped newline.
+	
+
+2003-02-15  Joe Riel  <joe@clifford>
+
+	* maplev.el 
+	(maplev-include-path): Defined custom variable for setting include path.
+	(maplev-cmaple--start-process): Added code to insert include path option.
+	(maplev-mint-region): Added code to insert include path option.
+	
+2003-02-10  Joe Riel  <joe@clifford>
+
+	* maplev.el
+	(maplev-dont-indent-re): Changed default value to include `$' so
+	that Maple preprocessor directives are not indented.
+	(maplev--preprocessor-directives-re): Assigned regex constant to
+	match a preprocessor directive.
+	(maplev-font-lock-keywords-1): Added font-locking of preprocessor
+	directives.
+	(maplev-preprocessor-face): Added custom face for font-locking
+	preprocessor directives.  Xemacs may define font-lock-preprocessor-face.
+
+	
+
+2002-10-04  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el:
+	(maplev-goto-info-node): Added this interactive function [NOT WORKING!]
+	(maplev-menu): Added menu item to run `maplev-goto-info-node'.
+	(maplev--grammar-alist): Changed grammar for `use' so
+	that it doesn't look for an `in'.  This is part of the kludge
+	to allow the use of the Maple `in' operator.
+	(maplev--completion-initialize): renamed from maplev-completion-initialize.
+	(maplev-help--cleanup-buffer): renamed from maplev-help-cleanup-buffer.
+	(maplev--short-delay): renamed from maplev-short-delay.
+	(maplev-cmaple--start-process): renamed from maplev-cmaple-start-process.
+	(maplev-cmaple--send-string): renamed from maplev-cmaple-send-string.
+	(maplev-cmaple-send-region): Changed so that it calls maplev-cmaple--clear-buffer
+	if a prefix was applied to the command.
+	(maplev-cmaple--clear-buffer): New function.  Clears the cmaple buffer.
+
+2002-10-03  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el (v2.15)
+	(maplev-align-rules-list): 
+	Added rules for aligning commas and columns (|);
+	they are applied only if a prefix argument is applied.
+
+2002-10-02  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el 
+	(maplev-insert-copyright-flag): Corrected docstring.
+	Changed coding system to unix; this may get reset
+	when the file is uploaded/downloaded to the website.
+	Removed iso-latin copyright symbol, replaced with `(C)'.
+
+2002-10-01  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el 
+	Added (require 'align) to customize alignment rules for Maple.
+	Added variables for aligning Maple assignments.
+	Created a new custom group, maplev-align. 
+
+2002-09-30  Joe Riel  <joe.riel@incep.com>
+
+	* maplev.el
+	(maplev-initial-abbrev-mode-flag): Changed default value to nil so
+	that abbreviations are initially disabled.  This was done to
+	prevent a new user from being unable to figure out how to type,
+	say, ``wh'', as a variable.  With abbreviations enabled this would
+	expand to ``while''.
+	(maplev--statement-terminator): modified regexp; removed match to
+	start of line and removed first match group.
+

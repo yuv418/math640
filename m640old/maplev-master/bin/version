@@ -1,0 +1,126 @@
+#!/bin/bash
+
+# Assign a version number to the source files
+
+script="$0"
+
+# Regular expression that matches version number
+
+bash_regex="([0-9]+\.)+[0-9]+"
+sed_regex="\([0-9]\+\.\)\+[0-9]\+"
+
+#{{{ Functions
+
+#{{{ (*) usage
+
+# Print a brief help page and exit with exit value $1
+# usage 101
+
+function usage { echo "\
+Usage:  $script [-h] [version]
+
+Options:
+  -h       show this info
+
+Read and write the version number embedded in the source files of the mdcs project.
+The version must match the regular expression $regex.
+If the version is not given, then the existing version numbers are read.
+
+\$ $script
+\$ $script 0.1.3
+
+"; exit $1 ; }
+
+#}}}
+
+#}}}
+#{{{ Process arguments
+
+write=
+
+while getopts ":h" opt; do
+    case "$opt" in
+	h  ) usage 0   ;;
+	?  ) usage 101 ;;
+    esac
+done
+
+shift $(($OPTIND-1))
+version="$1"
+
+if [ "$version" ]; then
+    [ -z "$version" ] && echo "no version number specified" && exit 101
+    [[ ! "$version" =~ ^$bash_regex$ ]] && echo "Illegal version number: ${version}. See $script -h." &&  exit 1
+    sed_opt="--in-place"
+    sed_cmd="s/$sed_regex/$version/"
+else
+    sed_opt="--quiet"
+    sed_cmd="p"
+fi
+
+#echo $sed_cmd
+#exit 1
+
+#}}}
+#{{{ Update source files
+
+#{{{ * VERSION
+
+file="VERSION"
+[ -z "$version" ] || echo "${version}" > ${file}
+
+#}}}
+#{{{ * version.mk
+
+file="version.mk"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "/^VERSION := /${sed_cmd}" "$file"
+
+#}}}
+#{{{ * lisp/maplev.el
+
+file="lisp/maplev.el"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "
+/;; Version:/{$sed_cmd}
+/defconst maplev-version/{$sed_cmd}
+" "$file"
+
+#}}}
+#{{{ * lisp/maplev-pkg.el
+
+file="lisp/maplev-pkg.el"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "/\"maplev\"/${sed_cmd}" "$file"
+
+#}}}
+#{{{ * README.md
+file="README.md"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "/^\*\*\Version /$sed_cmd" "$file"
+
+#}}}
+#{{{ * README-installer
+file="README-installer"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "/^VERSION/$sed_cmd" "$file"
+
+#}}}
+#{{{ * run-installer
+
+file="run-installer"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "/VERSION=/$sed_cmd" "$file"
+
+#}}}
+#{{{ * run-installer.bat
+
+file="run-installer.bat"
+[ -z "$version" ] && echo -ne "$file:\t"
+sed $sed_opt "/VERSION=/$sed_cmd" "$file"
+
+#}}}
+
+#}}}
+
+exit 0
