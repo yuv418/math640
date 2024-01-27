@@ -17,8 +17,8 @@ end:
 #with D1 digits. Try:
 #MakeRSAkey(100);
 MakeRSAkey:=proc(D1) local n,d,e,m,p,q,S:
-    p:=NextPrime1(rand(10^(D1)..10^(D1+1))()):
-    q:=NextPrime1(rand(10^(D1)..10^(D1+1))()):
+    p:=NextPrime1(rand(10^(D1-1)..10^D1-1)()):
+    q:=NextPrime1(rand(10^(D1)..10^D1-1)()):
     if p=q then
         return FAIL:
     fi:

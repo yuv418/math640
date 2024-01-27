@@ -1,3 +1,6 @@
+#OK to post homework
+#Ramesh Balaji,1/21/2024,hw1
+
 #
 # Part 1:
 #
