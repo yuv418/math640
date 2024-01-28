@@ -1,4 +1,56 @@
+#OK to post homework
+#Ramesh Balaji,1/21/2024,hw1
+
 with(Statistics):
+with(plots):
+with(linalg):
+
+#
+# Part 1:
+#
+
+# I feel quite confident with Maple now, so only a few examples (of things I am
+# a little confused/want more practice with) are included.
+
+# Solve a differential equation.
+# y'' + 6y' + 9 = 0
+
+y := f(t):
+dy := diff(y, t):
+ddy := diff(dy, t):
+
+diff_eq := ddy + 6*dy + 9 = 0:
+dsolve(diff_eq, y);
+
+y := 'y':
+
+pdf := 3*exp(-3*x);
+plot(pdf);
+
+circle := [sin(t), cos(t), t=0..2*Pi];
+plot(circle);
+
+polarplot(cos(6*t), t=0..2*Pi);
+
+# Plot a plane
+plot3d(x/20 + y/20 - 3);
+
+animatecurve(sin(exp(x)), x = -2*Pi .. 2*Pi);
+
+# A little linear algebra
+
+f := (i, j) -> i + j;
+B := matrix(3, 3, f);
+# entermatrix(B);
+
+f := (i, j) -> exp(i*j);
+A := matrix(3, 3, f);
+evalf(det(A));
+evalm(A &* B);
+
+f := 'f':
+A := 'A':
+B := 'B':
 
 #
 # Part 2:
@@ -10,10 +62,27 @@ with(Statistics):
 # the recursive function will use far more memory than the iterative function.
 #
 
-a:=rand(10^50000..10^50001)(): b:=rand(10^50000..10^50001)(): time(gcd(a,b)); time(EAnew(a,b));
+EAnew:=proc(m,n) local m1,n1,m1new:
+    m1:=m:
+    n1:=n:
+
+    while n1>0 do
+
+    m1new:=n1:
+    n1:=m1 mod n1:
+    m1:=m1new:
+    od:
+end:
+
+a:=rand(10^50000..10^50001)(): b:=rand(10^50000..10^50001)():
+gcd_time := time(gcd(a,b));
+eanew_time := time(EAnew(a,b));
+
+print("gcd time is " || gcd_time);
+print("EAnew time is " || eanew_time);
 
 # Note that the builtin function took something around 0.005 seconds, whereas
-# EAnew took 0.749, which is pretty bad!
+# EAnew took 2.556s (or something around), which is pretty bad!
 #
 # The igcd function in Maple is interpreted in the Maple runtime, which is C code.
 #
@@ -68,17 +137,34 @@ end:
 
 exp_iterations := 20:
 
-# prob_gcd_x := [seq(i1, i1=1..exp_iterations)]:
-# prob_gcd_y := [seq(EstimateProbGCD(10^10, 10^4), i1=1..exp_iterations)]:
+prob_gcd_x := [seq(i1, i1=1..exp_iterations)]:
+prob_gcd_y := [seq(EstimateProbGCD(10^10, 10^4), i1=1..exp_iterations)]:
 
-# ScatterPlot(prob_gcd_x, prob_gcd_y);
+ScatterPlot(prob_gcd_x, prob_gcd_y);
 
 # The answers are pretty close, soemthing around 6000/(10^10)
 
 #
-# Part 4: TODO
+# Part 4: Do not give me 5 dollars. I looked it up.
 #
+# Two integers a and b are coprime if and only if no prime divides both a and b.
+# The probability an integer n divides another integer q is 1/n.
+#
+# So the probability a prime p divides a and b is 1/(p^2)
+#
+# So the probability a prime does not divide both a and b is 1-(1/(p^2))
+#
+#
+# Since for every prime p two integers are not divisible by it are mutually
+# independent events, you can multiply the events.
+#
+# The following statements are equivalent.
+#
+prob := Product(1-(1/p^2), p=prime);
+prob_eq := (Product(1/(1-p^(-2))), p=prime)^(-1);
+prob_zeta := 1/Zeta(6);
 
+# Which is equivalent to 6/(pi^2)
 
 #
 # Part 5: MakeRSAkeyG
