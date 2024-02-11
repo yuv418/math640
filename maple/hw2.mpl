@@ -1,5 +1,5 @@
 #OK to post homework
-#Ramesh Balaji,1/21/2024,hw1
+#Ramesh Balaji,1/28/2024,hw2
 
 #
 # Part 1:
@@ -34,7 +34,8 @@ value(intparts(Int(x*exp(x), x), x));
 # Part 2:
 #
 
-# Part 2.1: two examples of problem 16.1
+# Part 2.1: two examples of problem 16.1. Unfortunately, this part takes around
+# 1 minute to run.
 
 
 with(NumberTheory):
@@ -54,7 +55,7 @@ ME1:=proc(a,e,n) local i,s,d:
 end:
 
 # Show that $a^phi(n) mod n = 1$
-EulerThmCheck := proc(cprms, n):
+EulerThmCheck := proc(cprms, n) local a:
     for a in cprms do
         if ME1(a, phi(n), n) <> 1 then
             return false:
@@ -73,8 +74,10 @@ Coprimes := proc(n) local g, lst:
     return lst:
 end:
 
+# WARNING: these take a LOT of time!
+
 # Question 1: Check Euler's theorem for n = 17268
-cpr := Coprimes(17268);
+cpr := Coprimes(17268):
 if not EulerThmCheck(cpr, 17268) then
     print("FAIL"):
 else
@@ -82,7 +85,7 @@ else
 fi:
 
 # Question 1: Check Euler's theorem for n = 89373
-cpr := Coprimes(89373);
+cpr := Coprimes(89373):
 if not EulerThmCheck(cpr, 89373) then
     print("FAIL"):
 else
@@ -142,4 +145,22 @@ MyIfactor := proc(n): local next_prime:
     return [next_prime, seq(MyIfactor(n/next_prime))]:
 end:
 
-# Test our prime factorization algorithm
+# Test our prime factorization algorithm against maple's
+
+rand_to_factor  := [seq(nextprime(rand(10^5..10^6)()) + 1, i1=1..25)];
+
+myifactor_times := [];
+ifactor_times := [];
+
+i2 := 1:
+for i1 in rand_to_factor do
+    t_start := time();
+
+    myifactor_times := [op(myifactor_times), [i2, time(MyIfactor(i1))]];
+    ifactor_times := [op(ifactor_times), [i2, time(ifactor(i1))]];
+
+    i2++:
+od:
+
+plot(myifactor_times);
+plot(ifactor_times);

@@ -1,0 +1,12 @@
+[package]
+name = "text_renderer"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ttf-parser = "0.19"
+pyo3 = {version = "0.19", features = ['auto-initialize']}
+lrc = "0.1"
+svg = "0.15"

@@ -1,5 +1,5 @@
 #OK to post homework
-#Ramesh Balaji,1/21/2024,hw1
+#Ramesh Balaji,1/28/2024,hw3
 
 with(Statistics):
 with(plots):
@@ -185,7 +185,7 @@ end:
 
 # One possible (maybe?) reason that MakeRSAkeyG(D1, 3) is less secure because there are more primes in the product
 # of n, so since there are more primes the probability that you find a prime
-# that factors n is higher.
+# that factors n is higher when searching for such a prime factor.
 
 #
 # Part 6: Signatures
