@@ -1,8 +1,21 @@
 #OK to post homework
 #Ramesh Balaji,2/12/2024,hwValentine
 
-# Hi! I put a lot of effort into this. 
-# 
+# Hi! I put a lot of effort into this. If you run it, please wait at least a minute (it will 100% run faster than that),
+# for the plot to actually generate. You should open Maple, and run "read hwValentineRameshBalaji.txt;" to see the output.
+
+# I have a story to tell about this. For HackRU (the Rutgers hackathon), my team made a Karaoke machine in Desmos (Desmos can play music!)
+# and part of that was converting TTF (font) files to Desmos functions. The way TTF files are defined are in terms of SVG paths, which consist 
+# of lines and Bezier curves, both of which we can plot in any plotting software, like Desmos. I wrote a Rust program to do this during the hackathon.
+
+# Emojis are also defined in terms of Bezier curves and lines. I figured I could choose a nice heart emoji and draw it using an SVG renderer. So 
+# I adapted my old TTF renderer to work with arbitrary emoji SVGs, and changed it to output plots in Maple as opposed to Desmos. 
+# At the same time, since my code was based on the font renderer, the font rendering still worked. 
+
+# So I used a combination of emojis and text rendering with a nice cursive font to generate this Maple plot, which probably looks very tedious to do by hand!
+# So just note, it wasn't done by hand. You can view the code for my plot generator here: 
+# https://github.com/yuv418/math640/tree/master/maple/valentines-hw/text_renderer
+
 # Please consider voting for me (:
 
 with(plots):
