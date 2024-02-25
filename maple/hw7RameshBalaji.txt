@@ -154,7 +154,7 @@ C:='C';
 #the first row is an ordering of the members of the actual code (LtoC(q,M)) with
 #[0$n] the first entry and the first columns are the coset reprenatives
 
-SA:=proc(q,n,M) local SL,C,A,coset_next:
+SA:=proc(q,n,M) local SL,C,A,coset_next,CC,i,j,ins:
  C:=LtoC(q,M):
  C:=C minus {[0$n]}:
  SL:=[[[0$n],op(C)]]:

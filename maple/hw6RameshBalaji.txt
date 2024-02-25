@@ -253,6 +253,7 @@ SGM := proc(Mat, q) local PivotRow, RowLen, MatOut, IRow, ICol:
             for IRow from PivotRow + 1 to nops(MatOut) do:
                 if MatOut[IRow][PivotRow] <> 0 then:
                     MatOut := ReductionR1(MatOut, q, PivotRow, IRow);
+        print(Matrix(MatOut));
                     break;
                 end:
             od:
@@ -262,24 +263,26 @@ SGM := proc(Mat, q) local PivotRow, RowLen, MatOut, IRow, ICol:
         if MatOut[PivotRow][PivotRow] = 0 then:
            for ICol from PivotRow to nops(MatOut[1]) do:
                if MatOut[PivotRow][ICol] <> 0 then:
-                  # print("Swapping Col1=" || PivotRow || " Col2=" || ICol);
+                  print("Swapping Col1=" || PivotRow || " Col2=" || ICol);
                   MatOut := ReductionC1(MatOut, q, PivotRow, ICol);
                   break;
+        print(Matrix(MatOut));
                end:
            end:
         end:
         # Make the pivot location to 1
         MatOut := ReductionR2(MatOut, q, (1/MatOut[PivotRow][PivotRow]) mod q, PivotRow);
+        print(Matrix(MatOut));
 
         # Eliminate every nonzero entry in the column of the pivot for all rows
         # beyond the current pivot row.
         for IRow from PivotRow + 1 to RowLen do:
             if MatOut[IRow][PivotRow] <> 0 then:
                 MatOut := ReductionR3(MatOut, q, (-1*MatOut[IRow][PivotRow]) mod q, PivotRow, 1, IRow);
-        # print(Matrix(MatOut));
+        print(Matrix(MatOut));
             end:
         od:
-        # print(Matrix(MatOut));
+        print(Matrix(MatOut));
     od:
 
     # Upwards elimination
@@ -289,6 +292,7 @@ SGM := proc(Mat, q) local PivotRow, RowLen, MatOut, IRow, ICol:
         for IRow from PivotRow - 1 to 1 by -1 do:
             if MatOut[IRow][PivotRow] <> 0 then:
                 MatOut := ReductionR3(MatOut, q, (-1*MatOut[IRow][PivotRow]) mod q, PivotRow, 1, IRow);
+        print(Matrix(MatOut));
             end:
         od:
         # print(Matrix(MatOut));
