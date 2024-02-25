@@ -1,27 +1,29 @@
 use std::fmt::Write;
 use ttf_parser as ttf;
 
-struct DesmosPolynomialBuilder {
+pub struct MaplePathBuilder {
     cmds: String,
-    function_list: Vec<String>,
-    current_point: (f32, f32),
+    pub function_list: Vec<String>,
+    pub current_point: (f32, f32),
+    pub end_control_pt: (f32, f32),
     scale: f32,
     offset: (f32, f32),
 }
 
-impl DesmosPolynomialBuilder {
-    fn new(scale: f32, offset: (f32, f32)) -> Self {
+impl MaplePathBuilder {
+    pub fn new(scale: f32, offset: (f32, f32)) -> Self {
         Self {
             scale,
             offset,
             function_list: vec![],
             cmds: String::new(),
             current_point: (0.0, 0.0),
+            end_control_pt: (0.0, 0.0),
         }
     }
 }
 
-impl ttf::OutlineBuilder for DesmosPolynomialBuilder {
+impl ttf::OutlineBuilder for MaplePathBuilder {
     fn move_to(&mut self, x: f32, y: f32) {
         let x = x * self.scale;
         let y = y * self.scale;
@@ -35,6 +37,10 @@ impl ttf::OutlineBuilder for DesmosPolynomialBuilder {
     fn line_to(&mut self, x: f32, y: f32) {
         let x = x * self.scale;
         let y = y * self.scale;
+        println!(
+            "line from {} {} to {} {}",
+            self.current_point.0, self.current_point.1, x, y
+        );
 
         // println!("Line to {} {}", x, y);
         write!(&mut self.cmds, "L {} {}", x, y).unwrap();
@@ -43,14 +49,26 @@ impl ttf::OutlineBuilder for DesmosPolynomialBuilder {
         let x_t_slope = x - self.current_point.0;
         let y_t_slope = y - self.current_point.1;
 
-        let l_x_t = format!("{} + {}t", self.current_point.0, x_t_slope);
-        let l_y_t = format!("{} + {}t", self.current_point.1, y_t_slope);
+        let c = format!(
+            "[({}) + (({}) - ({}))*t, ({}) + (({}) - ({}))*t, t=0..1]",
+            self.current_point.0 + self.offset.0,
+            x + self.offset.0,
+            self.current_point.0 + self.offset.0,
+            self.current_point.1 + self.offset.1,
+            y + self.offset.1,
+            self.current_point.1 + self.offset.1,
+        );
 
-        self.function_list.push(format!(
+        println!("{}", c);
+
+        self.function_list.push(c);
+
+        /*self.function_list.push(format!(
             "\\left({} + {},\\ {} + {}\\right)",
             l_x_t, self.offset.0, l_y_t, self.offset.1
-        ));
+        ));*/
 
+        self.end_control_pt = (x, y);
         self.current_point = (x, y);
     }
 
@@ -60,6 +78,8 @@ impl ttf::OutlineBuilder for DesmosPolynomialBuilder {
 
         let x1 = x1 * self.scale;
         let y1 = y1 * self.scale;
+
+        self.end_control_pt = (x1, y1);
 
         // println!("Quad to {} {} {} {}", x1, y1, x, y);
         write!(&mut self.cmds, "Q {} {} {} {}", x1, y1, x, y).unwrap();
@@ -80,8 +100,9 @@ impl ttf::OutlineBuilder for DesmosPolynomialBuilder {
         );
 
         self.function_list.push(format!(
-            "\\left({} + {}, {} + {}\\right)",
-            b_x, self.offset.0, b_y, self.offset.1
+            "[({}) + (((1-t)^2) * (({}) - ({}))) + ((t^2)*(({}) - ({}))), ({}) + (((1-t)^2) * (({}) - ({}))) + ((t^2)*(({}) - ({}))), t=0..1]",
+            x1 + self.offset.0, self.current_point.0 + self.offset.0, x1 + self.offset.0, x + self.offset.0, x1 + self.offset.0,
+            y1 + self.offset.1, self.current_point.1 + self.offset.1, y1 + self.offset.1, y + self.offset.1, y1 + self.offset.1,
         ));
 
         self.current_point = (x, y);
@@ -103,6 +124,14 @@ impl ttf::OutlineBuilder for DesmosPolynomialBuilder {
         // Push to function list
         // todo!();
 
+        let c = format!(
+            "[(((1-t)^3) * ({})) + (3*((1-t)^2)*t*({})) + (3*(1-t)*(t^2)*({})) + (t^3)*({}), (((1-t)^3) * ({})) + (3*((1-t)^2)*t*({})) + (3*(1-t)*(t^2)*({})) + (t^3)*({}), t=0..1]",
+            self.current_point.0 + self.offset.0, x1 + self.offset.0, x2 + self.offset.0, x + self.offset.0,
+            self.current_point.1+ self.offset.1, y1 + self.offset.1, y2 + self.offset.1, y + self.offset.1
+        );
+        self.function_list.push(c);
+
+        self.end_control_pt = (x2, y2);
         self.current_point = (x, y);
     }
 
@@ -142,7 +171,7 @@ fn generate_fns_for_char(
             // Useless debugging information
             // println!("{:?}", font_face.glyph_svg_image(a_character));
             // println!("{:?}", font_face.glyph_raster_image(a_character, 100));
-            let mut builder = DesmosPolynomialBuilder::new(scale, offset);
+            let mut builder = MaplePathBuilder::new(scale, offset);
             let rect = font_face.outline_glyph(a_character, &mut builder);
             // println!("Commands are: {}", builder.cmds);
             // println!("Function array is: {:?}", builder.function_list);
