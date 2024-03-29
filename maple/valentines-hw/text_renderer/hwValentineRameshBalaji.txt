@@ -4,6 +4,9 @@
 # Hi! I put a lot of effort into this. If you run it, please wait at least a minute (it will 100% run faster than that),
 # for the plot to actually generate. You should open Maple, and run "read hwValentineRameshBalaji.txt;" to see the output.
 
+# If it does not load (it should), please look at this picture of the plot that I saved: 
+# https://raw.githubusercontent.com/yuv418/math640/master/maple/valentines-hw/hwValentineImage.png
+
 # I have a story to tell about this. For HackRU (the Rutgers hackathon), my team made a Karaoke machine in Desmos (Desmos can play music!)
 # and part of that was converting TTF (font) files to Desmos functions. The way TTF files are defined are in terms of SVG paths, which consist 
 # of lines and Bezier curves, both of which we can plot in any plotting software, like Desmos. I wrote a Rust program to do this during the hackathon.

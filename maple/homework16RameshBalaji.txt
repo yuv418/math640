@@ -1,0 +1,43 @@
+#OK to post homework
+#Ramesh Balaji,3/24/2024,hw16
+
+# Part 1: qSR
+qSR:=proc(q,INI,L,n) local r,i,M,ng:
+r:=nops(L):
+
+M:=INI:
+
+while(nops(M))<n do
+ # (L[i][1] = x[i]) and (L[i][2] = a[i]), so the recurrence given is 
+ # satisfied.
+ ng:=add(L[i][1] * M[-L[i][2]],i=1..r) mod q:
+ M:=[op(M),ng]:
+od:
+M:
+
+end:
+
+# Part 2:
+IsPer:=proc(L,t) local i:
+if {seq(L[i]-L[i+t],i=1..nops(L)-t)}={0} then
+  true:
+else
+ false:
+fi:
+end:
+FindPer:=proc(L) local t:
+for t from 1 to trunc(nops(L)/2) while not IsPer(L,t) do od:
+if t=trunc(nops(L)/2)+1 then
+RETURN(FAIL):
+else
+ RETURN(t):
+fi:
+end:
+ o:=qSR(3,[1,2,1],[[1,2],[2,3]],10000);
+ FindPer(o);
+ o:=qSR(5,[1,2,4,1,2],[[1,2],[2,5]],10000);
+ FindPer(o);
+ o:=qSR(11,[3,1,2,4,3],[[1,2],[2,5]],10000);
+ FindPer(o);
+ o:=qSR(5,[1,0,0,0,0,0],[[3,4],[2,5],[3,6]],10000);
+ FindPer(o);
