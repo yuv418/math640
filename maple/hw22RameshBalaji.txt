@@ -1,0 +1,17 @@
+#Don't post homework
+#Ramesh Balaji,4/14/2024,hw22
+
+# It makes sense that the tidal strength is proportional
+# to m/d^3 by the formula for tidal acceleration.
+#
+# Since the observed size of the moon is the same as the observed size of the
+# sun, but the moon is much closer to earth, the radius of the sun is much much
+# larger than the radius of the moon. The distance is at least proportional to r
+# (to be honest, this is questionable).
+#
+# Then we have that T_m >> T_s -> m_m/d_m^3 >> m_s/d_s^3 -> m_m/r_m^3 >>
+# m_s/r_s^3 and multiplying by the constant for volume we know the density of
+# the moon is much greater.
+
+
+# Part 3: In homework 23.

@@ -1,3 +1,6 @@
+#OK to post homework
+#Ramesh Balaji,3/30/2024,hw18
+
 # Part 1: MakeCubic
 
 BinToIn:=proc(L) local k,i:

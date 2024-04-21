@@ -1,3 +1,6 @@
+#OK to post homework
+#Ramesh Balaji,3/30/2024,hw18
+
 # Part 1: MakeCubic
 
 BinToIn:=proc(L) local k,i:
@@ -66,17 +69,42 @@ end:
 
 # TODO: use maple RNG to show this works for random inputs.
 
-M := InToBin(4054462210240391391, 64);
-K := InToBin(387266627359, 40);
+# Generate a random 64-bit integer for the message
+# and a random 40-bit integer for the ciphertext
+
+M := InToBin(rand(0..(2^63)-1)(), 64);
+K := InToBin(rand(0..(2^40)-1)(), 40);
 
 Ciphertext := EncodeDES(M, K, 2);
 
-# Part 3:
+# Part 3: DecodeDES
 
-DecodeDES:=proc(M,K,r):
-    for i from r-1 to 0 do:
-        print(i)
-    end:
+revFeistel:=proc(LR,F) local k,L,R:
+    k:=nops(LR):
+    if k mod 2<>0 then
+    RETURN(FAIL):
+    fi:
+    L:=[op(1..k/2,LR)]:
+    R:=[op(k/2+1..k,LR)]:
+    [op(R),      op(L+ BinFun(F,R ) mod 2)    ]:
 end:
 
-DecodeDES(Ciphertext, K, 2);
+DecodeDES:=proc(M,K,r):
+    # Generate the cubic functions, but backwards.
+    F := [];
+    for i from r-1 to 0 by -1 do:
+        F := [op(F), MakeCubic(K[( (i*20) + 1 )..( (i+1) * 20 )], n)]
+    end:
+
+    data := M;
+    for poly in F do:
+        fn := proc(x):subs(n=x, poly):end:
+        data := revFeistel(data, fn);
+    end:
+
+    return data;
+end:
+
+if M = DecodeDES(Ciphertext, K, 2) then:
+    print("Success")
+end:
